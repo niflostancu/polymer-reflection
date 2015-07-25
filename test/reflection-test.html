@@ -1,0 +1,176 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="utf-8">
+	
+	<script src="../../webcomponentsjs/webcomponents.min.js"></script>
+	<script src="../../web-component-tester/browser.js"></script>
+	
+	<link rel="import" href="../../polymer/polymer.html" />
+	<link rel="import" href="../polymer-reflection.html" />
+	
+	<link rel="import" href="../../iron-validatable-behavior/iron-validatable-behavior.html">
+	
+	<!-- This is required for testing the library's behavior when the elements are not loaded yet -->
+	<script>
+		
+		var beforeResults = {};
+		beforeResults.notYet = Polymer.reflect('iron-input');
+		beforeResults.callbackProto = null;
+		
+		beforeResults.notYet2 = Polymer.reflect('iron-input', function(proto){
+			beforeResults.callbackProto = proto;
+		});
+		
+		//noinspection JSUnusedGlobalSymbols
+		var TestBehavior1 = {
+			properties: {
+				myCustomProp1: {
+					type: String,
+					value: 'yes'
+				}
+			},
+			myCustomMethod1: function() { return 'yes' }
+		};
+		Polymer.injectBehaviors('iron-input', [ TestBehavior1 ], {
+			before: [ Polymer.IronValidatableBehavior ]
+		});
+		
+		var FormTestBehavior = {
+			properties: {
+				testProp: {
+					type: String,
+					observer: '_testFormObserver',
+					value: ''
+				},
+				
+				_observerResults: {
+					type: String,
+					value: ''
+				},
+				
+				_observerResults2: {
+					type: String,
+					value: ''
+				}
+			},
+			
+			observers: [ "_testFormObserver2(contentType)" ],
+			
+			_testFormObserver: function (val) {
+				this._observerResults = val;
+			},
+			_testFormObserver2: function (val) {
+				this._observerResults2 = val;
+			}
+			
+		};
+		Polymer.injectBehaviors('iron-form', [FormTestBehavior]);
+		
+	</script>
+	
+	<link rel="import" href="../../iron-form/iron-form.html" />
+	<link rel="import" href="../../iron-input/iron-input.html" />
+	<link rel="import" href="../../paper-input/paper-input.html" />
+	
+	<script>
+		// reflect the elements after they registered but before they are used
+		var afterResults = {};
+		
+		afterResults.ironInputPrototype = Polymer.reflect('iron-input');
+		afterResults.callbackResults = null;
+		Polymer.reflect('iron-input', function(proto) {
+			afterResults.callbackResults = (proto ? 'YAY' : 'nope');
+		});
+		afterResults.callbackResultsConfirm = afterResults.callbackResults;
+		
+		//noinspection JSUnusedGlobalSymbols
+		var TestBehavior2 = {
+			properties: {
+				myCustomProp2: {
+					type: Number,
+					value: 2
+				}
+			},
+			myCustomMethod2: function () {
+				return 'yes2'
+			}
+		};
+		Polymer.injectBehaviors('paper-input', [TestBehavior1, TestBehavior2], {
+			index: 1
+		});
+		
+	</script>
+	
+</head>
+<body>
+
+<div>
+	
+	<form id="testForm" is="iron-form" method="post" action="">
+		
+		<label for="ironInput">Test 1</label>
+		<input is="iron-input" id="ironInput" name="name1" />
+		
+		<paper-input id="paperInput" name="name2" label="Test 2"></paper-input>
+		
+	</form>
+	
+</div>
+
+<script>
+	
+	// finally, assert the results
+	suite('reflection', function () {
+		
+		test('before registration', function () {
+			assert.notOk(beforeResults.notYet, 'reflect before registration');
+			assert.ok(beforeResults.callbackProto && beforeResults.callbackProto.is == 'iron-input', 
+				'callback before registration finally called');
+			
+			var ironInput = document.getElementById('ironInput');
+			assert.ok(ironInput && ironInput.behaviors[0] == TestBehavior1, 
+				'behavior added');
+			assert.equal(ironInput.myCustomProp1, 'yes', 'custom property present');
+			assert.ok(ironInput.myCustomMethod1 && ironInput.myCustomMethod1() == 'yes', 
+				'custom method mixed in prototype');
+		});
+		
+		test('after registration', function () {
+			assert.ok(afterResults.ironInputPrototype && 
+				afterResults.ironInputPrototype.is == 'iron-input', 'reflect after registration');
+			
+			assert.equal(afterResults.callbackResultsConfirm, 'YAY', 'after registration callback');
+			
+			var paperInput = document.getElementById('paperInput');
+			assert.ok(paperInput.behaviors[1] == TestBehavior1 && paperInput.behaviors[2] == TestBehavior2, 
+				'behaviors in the correct order');
+			
+			assert.equal(paperInput.myCustomProp2, 2, 'custom property present');
+			assert.ok(paperInput.myCustomMethod2 && paperInput.myCustomMethod2() == 'yes2',
+				'custom method mixed in prototype');
+		});
+		
+		test('observers', function (done) {
+			var testForm = document.getElementById('testForm');
+			
+			testForm.testProp = 'test value';
+			testForm.contentType = 'misc/test-value';
+			
+			flush(function(){
+				assert.equal(testForm.testProp, 'test value', 'testProp set');
+				assert.equal(testForm._observerResults, testForm.testProp, 'observer called');
+				
+				assert.equal(testForm.contentType, 'misc/test-value', 'contentType set');
+				assert.equal(testForm._observerResults2, testForm.contentType, 'observer2 called');
+				
+				done();
+			});
+		});
+		
+	});
+	
+</script>
+
+</body>
+</html>

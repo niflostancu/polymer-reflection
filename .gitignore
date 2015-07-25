@@ -1,0 +1,14 @@
+
+## IntelliJ project files
+.idea
+*.iml
+out
+gen
+
+## Bower & Node
+bower_components/
+node_modules/
+components/
+.sass-cache
+.tmp
+npm_debug.log
