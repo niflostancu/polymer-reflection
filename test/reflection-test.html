@@ -12,95 +12,14 @@
 	<link rel="import" href="../../iron-validatable-behavior/iron-validatable-behavior.html">
 	
 	<!-- This is required for testing the library's behavior when the elements are not loaded yet -->
-	<script>
-		
-		var beforeResults = {};
-		beforeResults.notYet = Polymer.reflect('iron-input');
-		beforeResults.callbackProto = null;
-		
-		beforeResults.notYet2 = Polymer.reflect('iron-input', function(proto){
-			beforeResults.callbackProto = proto;
-		});
-		
-		//noinspection JSUnusedGlobalSymbols
-		var TestBehavior1 = {
-			properties: {
-				myCustomProp1: {
-					type: String,
-					value: 'yes'
-				}
-			},
-			myCustomMethod1: function() { return 'yes' }
-		};
-		Polymer.injectBehaviors('iron-input', [ TestBehavior1 ], {
-			before: [ Polymer.IronValidatableBehavior ]
-		});
-		
-		var FormTestBehavior = {
-			properties: {
-				testProp: {
-					type: String,
-					observer: '_testFormObserver',
-					value: ''
-				},
-				
-				_observerResults: {
-					type: String,
-					value: ''
-				},
-				
-				_observerResults2: {
-					type: String,
-					value: ''
-				}
-			},
-			
-			observers: [ "_testFormObserver2(contentType)" ],
-			
-			_testFormObserver: function (val) {
-				this._observerResults = val;
-			},
-			_testFormObserver2: function (val) {
-				this._observerResults2 = val;
-			}
-			
-		};
-		Polymer.injectBehaviors('iron-form', [FormTestBehavior]);
-		
-	</script>
+	<link rel="import" href="includes/before_import.html" />
 	
 	<link rel="import" href="../../iron-form/iron-form.html" />
 	<link rel="import" href="../../iron-input/iron-input.html" />
 	<link rel="import" href="../../paper-input/paper-input.html" />
 	
-	<script>
-		// reflect the elements after they registered but before they are used
-		var afterResults = {};
-		
-		afterResults.ironInputPrototype = Polymer.reflect('iron-input');
-		afterResults.callbackResults = null;
-		Polymer.reflect('iron-input', function(proto) {
-			afterResults.callbackResults = (proto ? 'YAY' : 'nope');
-		});
-		afterResults.callbackResultsConfirm = afterResults.callbackResults;
-		
-		//noinspection JSUnusedGlobalSymbols
-		var TestBehavior2 = {
-			properties: {
-				myCustomProp2: {
-					type: Number,
-					value: 2
-				}
-			},
-			myCustomMethod2: function () {
-				return 'yes2'
-			}
-		};
-		Polymer.injectBehaviors('paper-input', [TestBehavior1, TestBehavior2], {
-			index: 1
-		});
-		
-	</script>
+	<!-- Test reflection after the components have been registered -->
+	<link rel="import" href="includes/after_import.html" />
 	
 </head>
 <body>

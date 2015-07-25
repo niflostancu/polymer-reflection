@@ -1,0 +1,28 @@
+<script>
+	(function() {
+		window.beforeResults = {};
+		beforeResults.notYet = Polymer.reflect('iron-input');
+		beforeResults.callbackProto = null;
+		
+		beforeResults.notYet2 = Polymer.reflect('iron-input', function (proto) {
+			beforeResults.callbackProto = proto;
+		});
+		
+		//noinspection JSUnusedGlobalSymbols
+		window.TestBehavior1 = {
+			properties: {
+				myCustomProp1: {
+					type: String,
+					value: 'yes'
+				}
+			},
+			myCustomMethod1: function () {
+				return 'yes'
+			}
+		};
+		Polymer.injectBehaviors('iron-input', [TestBehavior1], {
+			before: [Polymer.IronValidatableBehavior]
+		});
+		
+	})();
+</script>
