@@ -53,9 +53,27 @@
 			_testFormObserver2: function (val) {
 				this._observerResults2 = val;
 			}
-			
 		};
+		
 		Polymer.injectBehaviors('iron-form', [FormTestBehavior]);
+		
+		
+		// override tests
+		
+		if (afterResults.ironInputPrototype) {
+			afterResults.oldValidate = afterResults.ironInputPrototype.validate;
+		}
+		
+		//noinspection JSUnusedGlobalSymbols
+		window.TestBehaviorOverride = {
+			_overrideThis: 'I did it!',
+			_testOverride: function () {
+				return 'this too';
+			},
+			
+			validate: function () {} // should not override the prototype's original method
+		};
+		Polymer.injectBehaviors('iron-input', [TestBehaviorOverride]);
 		
 	})();
 </script>

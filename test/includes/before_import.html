@@ -18,7 +18,14 @@
 			},
 			myCustomMethod1: function () {
 				return 'yes'
-			}
+			},
+			
+			_overrideThis: 'first',
+			_testOverride: function() {
+				return 'first';
+			},
+			
+			validate: function() {} // should not override the prototype's
 		};
 		Polymer.injectBehaviors('iron-input', [TestBehavior1], {
 			before: [Polymer.IronValidatableBehavior]

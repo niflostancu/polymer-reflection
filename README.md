@@ -122,12 +122,10 @@ If the element has not registered yet, it queues a callback function that will d
 
 **Note:** adding behaviors after an element has been registered has several drawbacks:
 
-1. existing prototype methods won't get overridden as expected;
-2. the same with host attributes (and probably several other special properties);
-3. property effects / observers' calling order is undefined.
+1. host attributes (and probably several other special properties) won't get overridden as expected;
+2. property effects / observers calling order is not quite right (the behaviors will act as they are last in the list, 
+   regardless of the insertion point).
 
-Aka the behaviors will act as they are last in the list, regardless of the insertion point)
- 
 If you rely on any of these, you must call this method before the element is imported / registered!
 
 *Parameters*

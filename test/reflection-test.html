@@ -95,6 +95,16 @@
 			});
 		});
 		
+		test('remix / overrides', function (done) {
+			var ironInput = document.getElementById('ironInput');
+			
+			assert.equal(ironInput._overrideThis, 'I did it!', 'property successfully overridden');
+			assert.equal(ironInput._testOverride(), 'this too', 'method successfully overridden');
+			
+			assert.ok(afterResults.oldValidate && ironInput.validate === afterResults.oldValidate, 
+				'prototype method left alone');
+		});
+		
 	});
 	
 </script>
