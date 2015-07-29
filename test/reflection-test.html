@@ -31,7 +31,7 @@
 		<label for="ironInput">Test 1</label>
 		<input is="iron-input" id="ironInput" name="name1" />
 		
-		<paper-input id="paperInput" name="name2" label="Test 2"></paper-input>
+		<paper-input id="paperInput" name="name2" label="Test 2" my-custom-prop2="1234"></paper-input>
 		
 	</form>
 	
@@ -50,7 +50,12 @@
 			var ironInput = document.getElementById('ironInput');
 			assert.ok(ironInput && ironInput.behaviors[0] == TestBehavior1, 
 				'behavior added');
+			
 			assert.equal(ironInput.myCustomProp1, 'yes', 'custom property present');
+			
+			ironInput.setAttribute('my-custom-prop1', 'well');
+			assert.equal(ironInput.myCustomProp1, 'well', 'property from attribute');
+			
 			assert.ok(ironInput.myCustomMethod1 && ironInput.myCustomMethod1() == 'yes', 
 				'custom method mixed in prototype');
 		});
@@ -65,7 +70,10 @@
 			assert.ok(paperInput.behaviors[1] == TestBehavior1 && paperInput.behaviors[2] == TestBehavior2, 
 				'behaviors in the correct order');
 			
-			assert.equal(paperInput.myCustomProp2, 2, 'custom property present');
+			assert.equal(paperInput.myCustomProp2, 1234, 'custom attribute');
+			paperInput.setAttribute('my-custom-prop2', '999');
+			assert.equal(paperInput.myCustomProp2, 999, 'property from attribute');
+			
 			assert.ok(paperInput.myCustomMethod2 && paperInput.myCustomMethod2() == 'yes2',
 				'custom method mixed in prototype');
 		});
