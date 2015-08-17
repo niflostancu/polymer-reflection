@@ -4,12 +4,12 @@
     "private": false,
     "main": "polymer-reflection.html",
     "dependencies": {
-        "polymer": "Polymer/polymer#^1.0"
+        "polymer": "Polymer/polymer#^1.1"
     },
     "devDependencies": {
         "web-component-tester": "Polymer/web-component-tester",
-        "iron-form": "PolymerElements/iron-form#~1.0.7",
-        "iron-input": "PolymerElements/iron-input#~1.0.4",
-        "paper-input": "PolymerElements/paper-input#~1.0.6"
+        "iron-form": "PolymerElements/iron-form#^1.0",
+        "iron-input": "PolymerElements/iron-input#^1.0",
+        "paper-input": "PolymerElements/paper-input#^1.0"
     }
 }
