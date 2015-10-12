@@ -4,7 +4,7 @@
     "private": false,
     "main": "polymer-reflection.html",
     "dependencies": {
-        "polymer": "Polymer/polymer#~1.1.3"
+        "polymer": "Polymer/polymer#~1.1.5"
     },
     "devDependencies": {
         "web-component-tester": "Polymer/web-component-tester",
