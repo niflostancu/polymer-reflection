@@ -2,8 +2,9 @@
 
 A Polymer 1.0 reflection library that allows you to introspect and alter any Polymer element's prototype.
 
-**Warning:** This is quite experimental (i.e. even future minor Polymer versions might break it and it will need 
-re-adaptation to work). See [Implementation Notes](#implementationNotes) for an explanation.
+## ⚠️ Deprecated!
+
+Note: this code is old deprecated / not useful anymore!
 
 ## Why?
 
